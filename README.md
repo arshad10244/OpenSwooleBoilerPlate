@@ -124,7 +124,7 @@ As an example, a global middleware is located at `src/Middleware/Authentication.
 
 ---
 ### JSON Schema and Validations
-This project uses [Opis JSON Schema](https://opis.io/json-schema/), this allows defining JSON schema for validation of data input. The validation is performed through a middleware that is always chained globally during boot, so you don't have to configure anything.
+Validating user input within the controllers or middlewares is something I've never liked, bunch of if conditions, hardcoded regex don't look great, neither are easily scalable, this project uses [Opis JSON Schema](https://opis.io/json-schema/), this allows defining JSON schema for validation of data input. The validation is performed through a middleware that is always chained globally during boot, so you don't have to configure anything. Each route can either have its own JSON document that defines the input data schema, OR it can use a common schema, whatever fits the requirements.
 
 ` const SCHEMA_VALIDATION_RQST_METHODS ` defined in `config.php` controls which request methods should be validated against a schema, by default they are PUT, POST, PATCH
 
