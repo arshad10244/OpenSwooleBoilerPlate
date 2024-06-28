@@ -21,7 +21,8 @@ This is a boilerplate for creating APIs using OpenSwoole and a few other librari
 #### Setting Up
 1. Clone the repository.
 2. In the project root run `composer install`
-3. Once, everything is installed, in the root directory run `php server.php`
+3. Change the JWT key in /config.php
+4. Once, everything is installed, in the root directory run `php server.php`
 
 You should see an output similar to this :
 ```
