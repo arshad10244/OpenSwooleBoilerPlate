@@ -37,7 +37,7 @@ You should see an output similar to this :
 Open the URL in the browser : http://127.0.0.1:5023
 
 You should get a response similar to this :
-```
+```json
 {
   "status": "Success",
   "data": {
@@ -96,7 +96,7 @@ To add a new router:
 2. Implement the method stubs
 3. Start adding your routes in the __construct() function, consider the following code
 
-```
+```php
 public function __construct(MyRouter $router)  
 {  
     $router->map('GET', '/', [\Shahzaib\Framework\Controllers\Demo::class,'Index']);
@@ -118,7 +118,7 @@ To create a global middleware, simply place your middleware class in `src/Middle
 
 To create a route specific middleware, place your middleware class in src/Services or create a new folder and place it there, then link the middleware on a specific route :
 
-```
+```php
 $router->map('GET', '/', [\Shahzaib\Framework\Controllers\Demo::class,'Index'])->middleware(YOUR_MIDDLEWARE_CLASS:class);
 ```
 As an example, a global middleware is located at `src/Middleware/Authentication.php`
@@ -135,7 +135,9 @@ To add a schema for an endpoint/route, follow these steps:
 1. Create your JSON schema, and save it in `src/Schemas`
 2. Add the schema to an endpoint by invoking `->setSchema(schema_name)`:
 
-`$router->map('POST','/some_path', [\Shahzaib\Framework\Controllers\Demo::class,'SomeCallback'])->setSchema("dummy_schema");`
+```php
+$router->map('POST','/some_path', [\Shahzaib\Framework\Controllers\Demo::class,'SomeCallback'])->setSchema("dummy_schema");
+```
 
 As an example, the project already contains a dummy_schema.
 
@@ -169,7 +171,7 @@ As an example, an event listener is already present in the `src/EventListeners` 
 #### Dispatching Events
 Events can be dispatched anywhere in the code by using AsyncEventService class
 
-```
+```php
 $asyncEventService->dispatchEvent(YOUR_EVENT_NAME,$PAYLOAD);
 ```
 
@@ -182,7 +184,7 @@ Consider a Class : Acme, assume it holds information related to the authenticati
 
 Don't do this :
 
-```
+```php
 pubic function __construct(\Acme $acme)
 {
 $this->acme = $acme;
@@ -196,7 +198,7 @@ Explanation : \Acme::class is initialized once, any properties that are set once
 
 Do this :
 
-```
+```php
 public function __construct(\DI\FactoryInterface $factory)
 {
 $this->acme = $factory->make(Acme::class, [ ... ]);
