@@ -176,7 +176,7 @@ $asyncEventService->dispatchEvent(YOUR_EVENT_NAME,$PAYLOAD);
 ```
 
 ## Caution - Memory Leaks
-In a typical PHP application served using Nginx/Apache, the objects created during a request are limited in scope to that request, once a request terminates, everythig related to that request is destroyed too, this reduces the risks of memory leaks. When using Swoole, Objects that are created remain in the memory unless explicitly destroyed. This behaviour negatively impacts the dependency injection since most dependency containers including PHP-DI are singleton.
+In a typical PHP application served using Nginx/Apache, the objects created during a request are limited in scope to that request, once a request terminates, everythig related to that request is destroyed too, this reduces the risks of memory leaks. When using Swoole, Objects that are created remain in the memory unless explicitly destroyed. This behaviour negatively impacts the dependency injection since most dependency containers including PHP-DI work in a singleton configuration by default.
 
 To solve this problem for classes that are considered stateless in context of a request, instead of injecting the dependencies via constructor, you should inject the DI factory interface and create a new instance to avoid memory leaks.
 
@@ -194,7 +194,7 @@ $this->acme->setToken("some_value");
 
 }
 ```
-Explanation : \Acme::class is initialized once, any properties that are set once would remain set and the subsequent request would use the same object creating memory leaks, in this specific example, the very first request would set the token, because getToken() would return false, subsequent requests would not set the token since it was already set in the first request
+Explanation : \Acme::class is initialized once, any properties that are set once would remain set and the subsequent request would use the same object creating memory leaks, in this specific example, the very first request would set the token, because getToken() would return TRUE, subsequent requests would not set the token since it was already set in the first request
 
 Do this :
 
@@ -206,6 +206,8 @@ $this->acme = $factory->make(Acme::class, [ ... ]);
 }
 ```
 Explanation : We create a new object of \Acme::class instead of injecting, this ensures a new object everytime a request is processed
+
+PHP-DI version < 6 did provide an option called 'scopes'[https://php-di.org/doc/scopes.html] which would potentially inject a new instance everytime, however this functionality has been deprecated.
 
 
 
